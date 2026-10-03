@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="be">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9B2D20">
+<title>Венецыя і Гарда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column on Istrian-stone ground; header carries the Doge's Palace lozenge band and an ogee arcade; sticky day switcher; each day = lead, schematic map, keyed stops. Garamond nods to the Aldine press of Venice. */
+:root{
+  --bg:#F5F0EE; --surface:#FFFDFC; --ink:#221A18; --muted:#6E615C; --line:#E2D6D1;
+  --rosso:#9B2D20; --rosa:#E7C3BA; --oro:#A97F2F; --laguna:#1E5E5A; --laguna-soft:#E3EEEC;
+  --water:#D6E6E4; --land:#FBF8F6; --landline:#CDBFB9; --food:#A0611B; --mosto:#7E2457; --mosto-soft:#F3E4EC;
+  --f-display:"EB Garamond",Garamond,"Times New Roman",serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --lozenge:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='12'%3E%3Cpath d='M9 1 L17 6 L9 11 L1 6 Z'/%3E%3C/svg%3E");
+  --arch:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='46'%3E%3Cpath d='M2 46 V22 C2 12 13 9 18 1 C23 9 34 12 34 22 V46 H31 V23 C31 15 22 12 18 6 C14 12 5 15 5 23 V46 Z M14 24 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0 Z'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101718; --surface:#172122; --ink:#EDE5E1; --muted:#A3A09B; --line:#2A3637;
+  --rosso:#E07A64; --rosa:#5A2F2A; --oro:#D4AE5F; --laguna:#6FC0B6; --laguna-soft:#173232;
+  --water:#142B2C; --land:#1C2526; --landline:#3A4748; --food:#E4A95E; --mosto:#DE8BB8; --mosto-soft:#2E1C27; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101718; --surface:#172122; --ink:#EDE5E1; --muted:#A3A09B; --line:#2A3637;
+  --rosso:#E07A64; --rosa:#5A2F2A; --oro:#D4AE5F; --laguna:#6FC0B6; --laguna-soft:#173232;
+  --water:#142B2C; --land:#1C2526; --landline:#3A4748; --food:#E4A95E; --mosto:#DE8BB8; --mosto-soft:#2E1C27; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--f-body);padding-inline:16px;padding-block:0 56px}
+body::before{content:"";display:block;height:14px;margin-inline:-16px;background:var(--rosa);-webkit-mask:var(--lozenge) 0 0/18px 12px repeat;mask:var(--lozenge) 0 0/18px 12px repeat}
+.wrap{max-width:780px;margin:0 auto}
+a{color:var(--laguna);text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{color:var(--rosso)}
+a:focus-visible{outline:2px solid var(--rosso);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;margin:0;line-height:1.08}
+header{padding-block:22px 22px;position:relative}
+.arcade{height:46px;background:var(--oro);opacity:.55;-webkit-mask:var(--arch) 0 0/36px 46px repeat-x;mask:var(--arch) 0 0/36px 46px repeat-x;margin-bottom:18px}
+.eyebrow{font:500 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rosso)}
+h1{font-size:clamp(44px,10vw,76px);margin-top:8px;font-weight:500;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--rosso);font-weight:500}
+.sub{color:var(--muted);max-width:58ch;margin:12px 0 0}
+.bases{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;margin-top:22px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.base{background:var(--surface);padding:12px 14px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.base .lbl{font:500 11px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.base b{font:600 19px/1.25 var(--f-display)}
+.base .lk{font-size:14px}
+nav.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+nav.days a{flex:0 0 auto;text-decoration:none;color:var(--ink);font:500 14px/1 var(--f-body);padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+nav.days a:hover{border-color:var(--rosso);color:var(--rosso)}
+section{padding-block:38px 8px;scroll-margin-top:64px}
+section+section{border-top:1px solid var(--line)}
+.day-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--rosso);padding-bottom:8px}
+.day-h h2{font-size:clamp(32px,6vw,44px);font-weight:500}
+.day-h h2 i{color:var(--rosso)}
+.day-h .wd{font:italic 500 20px/1 var(--f-display);color:var(--muted)}
+.lead{max-width:62ch;margin:14px 0 0;font-size:17px}
+h3{font-size:25px;margin:30px 0 10px;font-weight:600}
+figure{margin:18px 0 6px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--water)}
+.mapbox{overflow-x:auto}
+figure svg{display:block;width:100%;min-width:560px;height:auto}
+figcaption{font-size:13px;color:var(--muted);padding:8px 12px;background:var(--surface);border-top:1px solid var(--line)}
+.m-water{fill:var(--water)} .m-land{fill:var(--land);stroke:var(--landline);stroke-width:1}
+.m-lake{fill:var(--water);stroke:var(--landline);stroke-width:1} .m-landbg{fill:var(--land)}
+.m-route{stroke:var(--rosso);stroke-width:1.6;stroke-dasharray:5 5;fill:none;opacity:.8}
+.m-pin circle{fill:var(--laguna);stroke:var(--surface);stroke-width:2}
+.m-pin text{fill:var(--surface);font:600 12px var(--f-body)}
+.m-pin.food circle{fill:var(--food)} .m-pin.event circle{fill:var(--mosto)}
+.m-pin.home circle{fill:var(--rosso)} .m-pin.pier circle{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.m-pin.pier text{fill:var(--ink)}
+.m-tag{fill:var(--ink);font:500 13px var(--f-body);paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
+ol.stops{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.stop{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px}
+.stop .num{width:26px;height:26px;border-radius:50%;background:var(--laguna);color:var(--surface);display:grid;place-items:center;font:600 13px var(--f-body);margin-top:2px}
+.stop.food .num{background:var(--food)} .stop.event .num{background:var(--mosto)} .stop.home .num{background:var(--rosso)}
+.stop.pier .num{background:var(--surface);color:var(--ink);border:2px solid var(--ink)}
+.stop-b{min-width:0}
+.stop h4{margin:0;font:600 19px/1.25 var(--f-display)}
+.stop p{margin:6px 0 0}
+.hours{font:400 13px/1.5 var(--f-mono);color:var(--muted)}
+.links{font-size:14px}
+.event-box{background:var(--mosto-soft);border:1px solid var(--line);border-radius:4px;padding:18px;margin-top:12px}
+.event-box h4{margin:0;font:italic 600 24px/1.2 var(--f-display);color:var(--mosto)}
+.sched{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:12px 0 0;font-size:15px}
+.sched dt{font:500 13px/1.6 var(--f-mono);color:var(--mosto);font-variant-numeric:tabular-nums}
+.sched dd{margin:0}
+.note{background:var(--laguna-soft);border-left:3px solid var(--laguna);border-radius:0 4px 4px 0;padding:12px 14px;margin-top:14px;font-size:15px}
+.note b{font-weight:600}
+.tbl{overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px/1.3 var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:var(--laguna)}
+.legend .f{background:var(--food)} .legend .e{background:var(--mosto)} .legend .h{background:var(--rosso)} .legend .s{background:var(--surface);border:2px solid var(--ink)}
+ul.plain{margin:8px 0 0;padding-left:20px} ul.plain li{margin:5px 0}
+.sources{font-size:14px;color:var(--muted)} .sources li{margin:3px 0}
+footer{margin-top:40px;text-align:center;color:var(--muted);font:italic 500 17px var(--f-display)}
+footer::before{content:"";display:block;height:46px;margin-bottom:10px;background:var(--oro);opacity:.4;-webkit-mask:var(--arch) center 0/36px 46px repeat-x;mask:var(--arch) center 0/36px 46px repeat-x}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header>
+  <div class="arcade" aria-hidden="true"></div>
+  <div class="eyebrow">4–7 кастрычніка 2026 · Біенале «In Minor Keys»</div>
+  <h1>Венецыя <em>і</em> Гарда</h1>
+  <p class="sub">Гнуткі план: базавыя кропкі на кожны дзень, без прывязкі да гадзін. Ля кожнага месца пазначаны рэжым працы і спасылкі на сайт і Google Maps.</p>
+  <div class="bases">
+    <div class="base"><span class="lbl">Венецыя · 4–6.10</span><b>Hotel Cristallo, Лідо</b><span class="lk"><a href="https://www.google.com/maps/search/?api=1&amp;query=45.4161111,12.3722222" target="_blank" rel="noopener">Google Maps</a></span></div>
+    <div class="base"><span class="lbl">Мальчэзінэ · 6–7.10</span><b>Hotel Modena</b><span class="lk"><a href="https://www.google.com/maps/search/?api=1&amp;query=45.764379,10.8073599" target="_blank" rel="noopener">Google Maps</a></span></div>
+    <div class="base"><span class="lbl">Вылет · 7.10, 21:30</span><b>Бергама, BGY</b><span class="lk"><a href="https://www.milanbergamoairport.it/en/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Bergamo%20Orio%20al%20Serio%20Airport" target="_blank" rel="noopener">Google Maps</a></span></div>
+  </div>
+</header>
+
+<nav class="days" aria-label="Дні">
+  <a href="#arrive">Прыезд і праязны</a><a href="#d4">Нд 4.10</a><a href="#d5">Пн 5.10</a><a href="#d6">Аў 6.10</a><a href="#d7">Ср 7.10</a><a href="#food">Ежа</a>
+</nav>
+
+<section id="arrive">
+  <div class="day-h"><h2>Прыезд і праязны</h2></div>
+  <p class="lead">Вы жывяце на Лідо, таму вада будзе кожны дзень. Праязны ACTV на 48 гадзін за €35 пакрывае ўсе вапарэта, у тым ліку на Мурана, Бурана і Сант-Эразма.</p>
+  <figure><div class="mapbox"><svg viewBox="0 0 760 1054" role="img" aria-label="Аэрапорт, Піяццале Рома і Лідо">
+<rect class="m-water" x="0" y="0" width="760" height="1054"/>
+<polygon class="m-land" points="-760.0,492.5 -380.0,433.4 -193.5,492.5 -103.6,394.0 69.1,236.4 276.4,147.8 483.6,49.3 760.0,-49.3 1036.4,-147.8 1312.7,-275.8 1312.7,-1063.8 -760.0,-1063.8"/>
+<polygon class="m-land" points="96.7,704.3 145.1,674.7 193.5,652.1 269.5,644.2 317.8,655.0 362.7,677.7 414.5,704.3 459.5,736.8 497.5,763.4 528.5,795.9 549.3,839.2 511.3,852.0 462.9,829.4 428.4,802.8 386.9,781.1 338.5,785.1 321.3,805.7 248.7,814.6 179.6,805.7 134.7,773.2 103.6,736.8"/>
+<polygon class="m-land" points="152.0,839.2 221.1,831.3 304.0,835.3 352.4,845.1 331.6,874.7 221.1,870.7 158.9,864.8"/>
+<polygon class="m-land" points="649.5,783.1 525.1,901.3 421.5,1073.7 324.7,1241.1 234.9,1398.7 276.4,1438.1 373.1,1339.6 483.6,1182.0 608.0,985.0 711.6,827.4"/>
+<polygon class="m-land" points="366.2,566.4 407.6,507.3 462.9,487.6 518.2,527.0 497.5,586.1 428.4,602.8"/>
+<polygon class="m-land" points="362.7,646.2 418.0,626.5 424.9,648.1 369.6,664.9"/>
+<polygon class="m-land" points="642.5,684.6 711.6,615.6 780.7,541.8 849.8,448.2 912.0,423.6 939.6,492.5 863.6,591.0 773.8,674.7 690.9,724.0"/>
+<polygon class="m-land" points="545.8,684.6 614.9,635.3 642.5,674.7 573.5,714.1"/>
+<polygon class="m-land" points="839.5,280.7 874.0,231.5 915.5,248.2 894.7,293.5"/>
+<polygon class="m-land" points="967.3,709.2 1312.7,610.7 1312.7,-275.8 1036.4,-128.1 981.1,216.7 1070.9,463.0 953.5,591.0"/>
+<line class="m-route" x1="427.7" y1="66.0" x2="183.1" y2="724.0"/>
+<line class="m-route" x1="427.7" y1="66.0" x2="353.7" y2="679.7"/>
+<line class="m-route" x1="353.7" y1="679.7" x2="544.4" y2="921.0"/>
+<g class="m-pin pier"><circle cx="427.7" cy="66.0" r="11"/><text x="427.7" y="66.5" text-anchor="middle" dominant-baseline="central">✈</text></g>
+<text class="m-tag" x="442.7" y="66.0" text-anchor="start" dominant-baseline="central">Аэрапорт VCE</text>
+<g class="m-pin pier"><circle cx="183.1" cy="724.0" r="11"/><text x="183.1" y="724.5" text-anchor="middle" dominant-baseline="central">P</text></g>
+<text class="m-tag" x="168.1" y="724.0" text-anchor="end" dominant-baseline="central">Piazzale Roma</text>
+<g class="m-pin pier"><circle cx="353.7" cy="679.7" r="11"/><text x="353.7" y="680.2" text-anchor="middle" dominant-baseline="central">F</text></g>
+<text class="m-tag" x="338.7" y="673.7" text-anchor="end" dominant-baseline="central">F.te Nove</text>
+<g class="m-pin home"><circle cx="567.9" cy="944.6" r="11"/><text x="567.9" y="945.1" text-anchor="middle" dominant-baseline="central">H</text></g>
+<text class="m-tag" x="582.9" y="944.6" text-anchor="start" dominant-baseline="central">Hotel Cristallo</text>
+</svg></div><figcaption>Схема: абрысы астравоў прыблізныя, адлегласці ў маштабе. Пункцір — асноўныя маршруты з аэрапорта.</figcaption></figure>
+
+  <h3>З аэрапорта Марка Пола да Венецыі</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Як</th><th>Куды</th><th>Кошт</th><th>Дадаткова</th></tr></thead>
+    <tbody>
+      <tr><td><b>Alilaguna, сіняя лінія</b> (лодка)</td><td>Проста на Лідо, праз Мурана і Fondamente Nove</td><td class="num">€15</td><td>Без перасадак, але даўжэй за аўтобус. У праязны ACTV не ўваходзіць. <a href="https://www.alilaguna.it/" target="_blank" rel="noopener">Сайт</a></td></tr>
+      <tr><td><b>ACTV Aerobus №5</b></td><td>Piazzale Roma, каля 25 хв</td><td class="num">€10</td><td>Квіток Aerobus + 90 хв на вапарэта — €18. Далей на Лідо — лініі 1, 5.1 або 5.2. <a href="https://actv.avmspa.it/en" target="_blank" rel="noopener">Сайт</a></td></tr>
+      <tr><td><b>ATVO Venezia Express</b></td><td>Piazzale Roma, каля 20 хв, без прыпынкаў</td><td class="num">€12</td><td>Туды і назад €20. <a href="https://www.atvo.it/" target="_blank" rel="noopener">Сайт</a></td></tr>
+      <tr><td><b>Таксі</b></td><td>Piazzale Roma</td><td class="num">≈ €40</td><td>Далей усё роўна вапарэта.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Праязны ACTV аэрапорт не пакрывае.</b> Aerobus, ATVO і Alilaguna аплачваюцца асобна. Калі ехаць Aerobus, бярыце звычайны квіток за €10, а праязны актывуйце першай валідацыяй на вапарэта на Piazzale Roma: 48 гадзін пачнуць лічыцца толькі з гэтага моманту.</p>
+
+  <h3>Праязны ACTV</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Праязны</th><th>Кошт</th><th>Калі браць</th></tr></thead>
+    <tbody>
+      <tr><td>48 гадзін</td><td class="num">€35</td><td>Асноўны варыянт: з прыезду 4-га да ад'езду 6-га раніцай</td></tr>
+      <tr><td>72 гадзіны</td><td class="num">€45</td><td>Калі 6-га будзеце катацца пазней, чым прыехалі 4-га</td></tr>
+      <tr><td>Rolling Venice, 72 гадзіны</td><td class="num">€27 + €6</td><td>Толькі для ўзросту 6–29 гадоў</td></tr>
+      <tr><td>Адна паездка, 75 хв</td><td class="num">€9,50</td><td>Калі праязны ўжо скончыўся</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain">
+    <li><b>Дзе купіць:</b> аўтаматы і касы Venezia Unica на Piazzale Roma і ля вакзала (прыстань Ferrovia), або аплікацыя AVM Venezia.</li>
+    <li><b>Як лічыцца:</b> гадзіны ад першай валідацыі. Картку прыкладаць да валідатара перад кожнай пасадкай.</li>
+    <li><b>Не ўваходзіць:</b> аэрапорт (Aerobus №5, ATVO), Alilaguna, лініі 16, 19, 21. Гарадскія аўтобусы і трамвай Мэстрэ ўваходзяць.</li>
+    <li><b>Збор за ўваход у горад</b> у кастрычніку не дзейнічае: у 2026 годзе ён скончыўся 26 ліпеня.</li>
+    <li><b>Лідо ↔ горад:</b> ад прыстані Lido S.M.E. лініі 1, 5.1, 5.2 ідуць да Сан-Закарыі і далей. Лінія 5.1 ідзе на Fondamente Nove. Расклад зручна глядзець у аплікацыі AVM.</li>
+  </ul>
+</section>
+
+<section id="d4">
+  <div class="day-h"><h2>4 кастрычніка</h2><span class="wd">нядзеля</span></div>
+  <p class="lead">Беларуская выстава адкрыта толькі сёння (у панядзелак зачынена). Далей Біенале ў Кастэла, а пасля — Festa del Mosto на Сант-Эразма. Усё апцыянальна.</p>
+  <figure><div class="mapbox"><svg viewBox="0 0 760 612" role="img" aria-label="Мапа на 4 кастрычніка">
+<rect class="m-water" x="0" y="0" width="760" height="612"/>
+<polygon class="m-land" points="-892.2,75.3 -528.7,18.8 -350.3,75.3 -264.3,-18.8 -99.1,-169.5 99.1,-254.3 297.4,-348.5 561.7,-442.7 826.1,-536.8 1090.4,-659.3 1090.4,-1412.7 -892.2,-1412.7"/>
+<polygon class="m-land" points="-72.7,277.8 -26.4,249.6 19.8,227.9 92.5,220.4 138.8,230.7 181.7,252.4 231.3,277.8 274.3,308.9 310.6,334.3 340.3,365.4 360.2,406.9 323.8,419.1 277.6,397.5 244.5,372.0 204.9,351.3 158.6,355.1 142.1,374.8 72.7,383.3 6.6,374.8 -36.3,343.8 -66.1,308.9"/>
+<polygon class="m-land" points="-19.8,406.9 46.3,399.3 125.6,403.1 171.8,412.5 152.0,440.8 46.3,437.0 -13.2,431.4"/>
+<polygon class="m-land" points="456.0,353.2 337.0,466.2 237.9,631.0 145.4,791.1 59.5,941.8 99.1,979.5 191.7,885.3 297.4,734.6 416.3,546.3 515.5,395.6"/>
+<polygon class="m-land" points="185.0,146.0 224.7,89.5 277.6,70.6 330.4,108.3 310.6,164.8 244.5,180.8"/>
+<polygon class="m-land" points="181.7,222.3 234.6,203.4 241.2,224.2 188.3,240.2"/>
+<polygon class="m-land" points="449.4,259.0 515.5,193.1 581.6,122.4 647.7,33.0 707.1,9.4 733.6,75.3 660.9,169.5 575.0,249.6 495.7,296.7"/>
+<polygon class="m-land" points="356.9,259.0 423.0,211.9 449.4,249.6 383.3,287.3"/>
+<polygon class="m-land" points="637.7,-127.1 670.8,-174.2 710.4,-158.2 690.6,-114.9"/>
+<polygon class="m-land" points="760.0,282.5 1090.4,188.4 1090.4,-659.3 826.1,-518.0 773.2,-188.4 859.1,47.1 746.8,169.5"/>
+<g class="m-pin "><circle cx="73.0" cy="299.3" r="11"/><text x="73.0" y="299.8" text-anchor="middle" dominant-baseline="central">1</text></g>
+<g class="m-pin "><circle cx="69.2" cy="314.1" r="11"/><text x="69.2" y="314.6" text-anchor="middle" dominant-baseline="central">2</text></g>
+<g class="m-pin food"><circle cx="123.9" cy="288.3" r="11"/><text x="123.9" y="288.8" text-anchor="middle" dominant-baseline="central">3</text></g>
+<g class="m-pin "><circle cx="232.9" cy="344.3" r="11"/><text x="232.9" y="344.8" text-anchor="middle" dominant-baseline="central">4</text></g>
+<text class="m-tag" x="232.9" y="324.3" text-anchor="middle" dominant-baseline="central">Арсенале</text>
+<g class="m-pin "><circle cx="274.4" cy="352.2" r="11"/><text x="274.4" y="352.7" text-anchor="middle" dominant-baseline="central">5</text></g>
+<g class="m-pin "><circle cx="280.9" cy="386.2" r="11"/><text x="280.9" y="386.7" text-anchor="middle" dominant-baseline="central">6</text></g>
+<text class="m-tag" x="295.9" y="394.2" text-anchor="start" dominant-baseline="central">Джардзіні</text>
+<g class="m-pin "><circle cx="293.7" cy="352.3" r="11"/><text x="293.7" y="352.8" text-anchor="middle" dominant-baseline="central">7</text></g>
+<g class="m-pin pier"><circle cx="173.1" cy="254.3" r="11"/><text x="173.1" y="254.8" text-anchor="middle" dominant-baseline="central">F</text></g>
+<text class="m-tag" x="158.1" y="246.3" text-anchor="end" dominant-baseline="central">F.te Nove</text>
+<g class="m-pin event"><circle cx="611.3" cy="162.0" r="11"/><text x="611.3" y="162.5" text-anchor="middle" dominant-baseline="central">8</text></g>
+<text class="m-tag" x="626.3" y="162.0" text-anchor="start" dominant-baseline="central">Сант-Эразма</text>
+<g class="m-pin food"><circle cx="89.9" cy="230.6" r="11"/><text x="89.9" y="231.1" text-anchor="middle" dominant-baseline="central">9</text></g>
+<text class="m-tag" x="74.9" y="230.6" text-anchor="end" dominant-baseline="central">Ормезіні</text>
+<g class="m-pin home"><circle cx="378.0" cy="507.6" r="11"/><text x="378.0" y="508.1" text-anchor="middle" dominant-baseline="central">H</text></g>
+<text class="m-tag" x="393.0" y="507.6" text-anchor="start" dominant-baseline="central">Лідо</text>
+</svg></div><figcaption>Нумары адпавядаюць спісу ніжэй. F — прыстань Fondamente Nove (лінія 13 на Сант-Эразма), H — гатэль.</figcaption></figure>
+  <div class="legend"><span><i></i>выставы і культура</span><span><i class="f"></i>ежа</span><span><i class="e"></i>свята</span><span><i class="h"></i>жыллё</span><span><i class="s"></i>прыстань</span></div>
+  <ol class="stops">
+    <li class="stop "><span class="num" aria-hidden="true">1</span><div class="stop-b"><h4>«Official. Unofficial. Belarus.»</h4><p>Першая за шэсць гадоў прысутнасць Беларусі на Біенале і ўпершыню не ад імя дзяржавы. Карціны Грыневіча на месцы алтароў, шар са сціснутых забароненых кніг, крыж з камер. На суседніх могілках гучаць сведчанні палітвязняў.</p><p class="hours">Аў–Нд 10:00–18:00 · Пн зачынена · бясплатна</p><p class="links"><a href="https://www.labiennale.org/en/art/2026/official-unofficial-belarus" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=San%20Giovanni%20Evangelista%20Venezia&amp;query_place_id=ChIJO5gQ0cWxfkcRLvJiZLYZm2g" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">2</span><div class="stop-b"><h4>Скуола Грандэ дзі Сан-Рока</h4><p>5 хвілін ад выставы. Дзесяткі палотнаў Тынтарэта ў адным будынку.</p><p class="hours">Працуе штодня, гадзіны і кошт праверце на сайце</p><p class="links"><a href="https://www.scuolagrandesanrocco.org/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=45.4366549,12.3254746" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop food"><span class="num" aria-hidden="true">3</span><div class="stop-b"><h4>Bacaro aea pescaria</h4><p>Перакус ля рынку Рыальта: вустрыцы, віно з астравоў лагуны.</p><p class="hours">Нд 7:30–22:00 · Пн 7:30–22:30</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Bacaro%20aea%20pescaria&amp;query_place_id=ChIJpQybFQCxfkcR_V_Rv-M1PP8" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">4</span><div class="stop-b"><h4>Кампа дэла Тана: Ганконг, Макао, Азербайджан, Сан-Марына</h4><p>Чатыры бясплатныя павільёны на адной плошчы насупраць уваходу ў Арсенале.</p><p class="hours">Бясплатна</p><p class="links"><a href="https://universes.art/en/venice-biennale/2026/exhibitions-in-venice/castello" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Campo%20de%20la%20Tana%20Venezia&amp;query_place_id=ChIJ1w3CgS-ufkcRG3L3KQCuCEQ" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">5</span><div class="stop-b"><h4>Павільён Ватыкана, Santa Maria Ausiliatrice</h4><p>Ватыкан: апошняя праца Аляксандра Клюге, гукавая інсталяцыя пра Хільдэгарду Бінгенскую.</p><p class="hours">Аў–Нд 10:00–18:00 · бясплатна, без браніравання</p><p class="links"><a href="https://www.labiennale.org/en/art/2026/holy-see" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Santa%20Maria%20Ausiliatrice%20Castello%20450%20Venezia&amp;query_place_id=ChIJrQCx7HqvfkcRqZ5R3uVnXCQ" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">6</span><div class="stop-b"><h4>Джардзіні Біенале</h4><p>Платна. Аўстрыя (Holzinger, «Seaworld Venice»; можа быць чарга), Японія, Германія, Паўночны павільён. На Джардзіні хопіць 2–3 гадзін.</p><p class="hours">Аў–Нд 10:00–18:00, апошні ўваход 17:45 · Пн зачынена · €30 (Джардзіні + Арсенале), толькі анлайн</p><p class="links"><a href="https://www.labiennale.org/en/art/2026/information" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Giardini%20della%20Biennale%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">7</span><div class="stop-b"><h4>Докі Cucchini: Каталонія, Ісландыя, «Luna»</h4><p>Бясплатныя Каталонія, Ісландыя і «Luna» Рональда Вентуры ў былых доках.</p><p class="hours">Аў–Нд, пазначана 11:00–19:00; у кастрычніку магчыма да 18:00</p><p class="links"><a href="https://www.docks-cucchini.com/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Docks%20Cantieri%20Cucchini%20Venezia&amp;query_place_id=ChIJY5pOri6xfkcRDuwjo6hdv-Y" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop event"><span class="num" aria-hidden="true">8</span><div class="stop-b"><h4>Festa del Mosto, Сант-Эразма</h4><p>48-ы фэст маладога віна. Ад Fondamente Nove (прыстань D) лінія 13, каля 30 хв; з Лідо — лінія 5.1 да Fondamente Nove, потым 13. Пры патрэбе пускаюць дадатковыя рэйсы.</p><p class="hours">Праграма — ніжэй · уваход вольны</p><p class="links"><a href="https://www.instagram.com/comitatofeste_s.erasmo/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Sant%27Erasmo%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop food"><span class="num" aria-hidden="true">9</span><div class="stop-b"><h4>Bacareto da ea Neni</h4><p>Вечар на набярэжнай Ормезіні: побач і Bacaro ae Bricoe.</p><p class="hours">Neni: Нд 11:00–21:30, Пн зачынена · Bricoe: штодня 8:30–23:00</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Bacareto%20da%20ea%20Neni&amp;query_place_id=ChIJ1TaL_-mxfkcRRDHFNkK8VsU" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+  </ol>
+
+  <div class="event-box">
+    <h4>48ª Festa del Mosto, Isola di Sant'Erasmo</h4>
+    <dl class="sched">
+      <dt>10:30</dt><dd>Падзячная імша</dd>
+      <dt>11:30</dt><dd>Кірмаш рамесных і агародных прадуктаў, выстава жывапісу Уільяма Рыццардзі, гульні для дзяцей</dd>
+      <dt>12:00</dt><dd>Дэгустацыя мясцовых прадуктаў</dd>
+      <dt>13:30</dt><dd>Вулічныя артысты</dd>
+      <dt>15:30</dt><dd>Таптанне вінаграду і дэгустацыя мосту</dd>
+      <dt>16:45</dt><dd>Змешаная рэгата на лодках-маскарэтах</dd>
+      <dt>18:00</dt><dd>Узнагароджанне</dd>
+      <dt>18:30</dt><dd>DJ-сэт Overclip Band</dd>
+    </dl>
+    <p>Таксама: старыя рамёствы, марожанае з мосту, як робяць сыр, гіганцкая паэлья. Навіны — у Instagram <a href="https://www.instagram.com/comitatofeste_s.erasmo/" target="_blank" rel="noopener">@comitatofeste_s.erasmo</a>.</p>
+  </div>
+
+  <h3>Калі будзе час або жаданне</h3>
+  <ol class="stops">
+    <li class="stop "><span class="num" aria-hidden="true">·</span><div class="stop-b"><h4>Тадэвуш Кантар, Procuratie Vecchie</h4><p>Кантар і «Мёртвы клас» на плошчы Сан-Марка.</p><p class="hours">Аў–Нд 10:00–18:00 · бясплатна</p><p class="links"><a href="https://www.labiennale.org/en/art/2026/collateral-events/tadeusz-kantor-1915-1990-emballage-cricotage-and-madame-jarema" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Procuratie%20Vecchie%20Piazza%20San%20Marco%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">·</span><div class="stop-b"><h4>Тэатр Ла Фенічэ</h4><p>Спектакляў 4–5.10 няма. Днём тэатр можна агледзець з аўдыягідам; да сярэдзіны кастрычніка ідзе рамонт сцэны.</p><p class="hours">Звычайна 9:30–18:00 · €10–14 · праверце на сайце</p><p class="links"><a href="https://www.teatrolafenice.it/en/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=45.4336376,12.3337579" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">·</span><div class="stop-b"><h4>Interpreti Veneziani, San Vidal</h4><p>Барочны канцэрт у царкве пад карцінай Карпача.</p><p class="hours">Штовечар 21:00 · ад €31</p><p class="links"><a href="https://www.interpretiveneziani.com/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Chiesa%20di%20San%20Vidal%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+  </ol>
+</section>
+
+<section id="d5">
+  <div class="day-h"><h2>5 кастрычніка</h2><span class="wd">панядзелак</span></div>
+  <p class="lead">Выспы. Пачніце з Сан-Мікеле: у кастрычніку могілкі зачыняюцца рана. Музей шкла на Мурана ў панядзелак працуе, музей мерану на Бурана — не.</p>
+  <figure><div class="mapbox"><svg viewBox="0 0 760 785" role="img" aria-label="Мапа на 5 кастрычніка">
+<rect class="m-water" x="0" y="0" width="760" height="785"/>
+<polygon class="m-land" points="-855.0,297.9 -506.7,243.8 -335.7,297.9 -253.3,207.6 -95.0,63.2 95.0,-18.1 285.0,-108.3 538.3,-198.6 791.7,-288.9 1045.0,-406.3 1045.0,-1128.5 -855.0,-1128.5"/>
+<polygon class="m-land" points="-69.7,492.0 -25.3,464.9 19.0,444.2 88.7,437.0 133.0,446.9 174.2,467.7 221.7,492.0 262.8,521.8 297.7,546.2 326.2,576.0 345.2,615.7 310.3,627.5 266.0,606.7 234.3,582.3 196.3,562.5 152.0,566.1 136.2,585.0 69.7,593.1 6.3,585.0 -34.8,555.2 -63.3,521.8"/>
+<polygon class="m-land" points="-19.0,615.7 44.3,608.5 120.3,612.1 164.7,621.1 145.7,648.2 44.3,644.6 -12.7,639.2"/>
+<polygon class="m-land" points="437.0,564.3 323.0,672.6 228.0,830.6 139.3,984.1 57.0,1128.5 95.0,1164.6 183.7,1074.3 285.0,929.9 399.0,749.3 494.0,604.9"/>
+<polygon class="m-land" points="177.3,365.6 215.3,311.5 266.0,293.4 316.7,329.5 297.7,383.7 234.3,399.0"/>
+<polygon class="m-land" points="174.2,438.8 224.8,420.7 231.2,440.6 180.5,455.9"/>
+<polygon class="m-land" points="430.7,474.0 494.0,410.8 557.3,343.1 620.7,257.3 677.7,234.7 703.0,297.9 633.3,388.2 551.0,464.9 475.0,510.1"/>
+<polygon class="m-land" points="342.0,474.0 405.3,428.8 430.7,464.9 367.3,501.1"/>
+<polygon class="m-land" points="611.2,103.8 642.8,58.7 680.8,74.0 661.8,115.6"/>
+<polygon class="m-land" points="728.3,496.5 1045.0,406.3 1045.0,-406.3 791.7,-270.8 741.0,45.1 823.3,270.8 715.7,388.2"/>
+<g class="m-pin "><circle cx="116.2" cy="478.2" r="11"/><text x="116.2" y="478.7" text-anchor="middle" dominant-baseline="central">1</text></g>
+<g class="m-pin pier"><circle cx="165.9" cy="469.5" r="11"/><text x="165.9" y="470.0" text-anchor="middle" dominant-baseline="central">F</text></g>
+<text class="m-tag" x="150.9" y="477.5" text-anchor="end" dominant-baseline="central">F.te Nove</text>
+<g class="m-pin "><circle cx="202.7" cy="432.4" r="11"/><text x="202.7" y="432.9" text-anchor="middle" dominant-baseline="central">2</text></g>
+<text class="m-tag" x="217.7" y="432.4" text-anchor="start" dominant-baseline="central">Сан-Мікеле</text>
+<g class="m-pin "><circle cx="264.1" cy="347.6" r="11"/><text x="264.1" y="348.1" text-anchor="middle" dominant-baseline="central">3</text></g>
+<text class="m-tag" x="279.1" y="347.6" text-anchor="start" dominant-baseline="central">Мурана</text>
+<g class="m-pin "><circle cx="646.0" cy="85.8" r="11"/><text x="646.0" y="86.3" text-anchor="middle" dominant-baseline="central">4</text></g>
+<text class="m-tag" x="661.0" y="85.8" text-anchor="start" dominant-baseline="central">Бурана</text>
+<g class="m-pin "><circle cx="70.9" cy="453.2" r="11"/><text x="70.9" y="453.7" text-anchor="middle" dominant-baseline="central">5</text></g>
+<text class="m-tag" x="55.9" y="453.2" text-anchor="end" dominant-baseline="central">Гета</text>
+<g class="m-pin food"><circle cx="114.5" cy="459.9" r="11"/><text x="114.5" y="460.4" text-anchor="middle" dominant-baseline="central">6</text></g>
+<g class="m-pin home"><circle cx="362.3" cy="712.3" r="11"/><text x="362.3" y="712.8" text-anchor="middle" dominant-baseline="central">H</text></g>
+<text class="m-tag" x="377.3" y="712.3" text-anchor="start" dominant-baseline="central">Лідо</text>
+</svg></div><figcaption>Ад Fondamente Nove лініі 4.1/4.2 ідуць на Сан-Мікеле і Мурана, лінія 12 — на Бурана.</figcaption></figure>
+  <ol class="stops">
+    <li class="stop "><span class="num" aria-hidden="true">1</span><div class="stop-b"><h4>Палацца Мора</h4><p>Па жаданні, перад выспамі: «Gaza – No Words», ORLAN, Сальвадор. Ад Мора 10 хвілін пешшу да Fondamente Nove.</p><p class="hours">Ср–Пн 10:00–18:00 · Аў зачынена · бясплатна</p><p class="links"><a href="https://ecc-italy.eu/locations/palazzomora" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Palazzo%20Mora%20Venezia&amp;query_place_id=ChIJN6qXYtyxfkcRep0lS3pK1jw" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">2</span><div class="stop-b"><h4>Сан-Мікеле, востраў-могілкі</h4><p>Вапарэта 4.1/4.2 ад Fondamente Nove, 5–7 хв. Магілы Стравінскага, Бродскага, Эзры Паўнда; рэнесансная царква Сан-Мікеле.</p><p class="hours">Кастрычнік: 7:30–16:00/16:30 · бясплатна</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Cimitero%20di%20San%20Michele%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">3</span><div class="stop-b"><h4>Мурана, Museo del Vetro</h4><p>Тыя ж лініі 4.1/4.2. На востраве шмат майстэрняў, дзе можна паглядзець на выдуванне шкла.</p><p class="hours">Штодня 10:00–18:00, апошні ўваход 17:00 · €10 (камбо з мераном не бярыце)</p><p class="links"><a href="https://museovetro.visitmuve.it/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Museo%20del%20Vetro%20Murano" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">4</span><div class="stop-b"><h4>Бурана</h4><p>Лінія 12 ад Murano Faro, 30–40 хв. Рознакаляровыя дамы і ціхія каналы. Назад — лінія 12 да Fondamente Nove, каля 45 хв.</p><p class="hours">Музей мерану: 10:00–16:00, Пн зачынены</p><p class="links"><a href="https://museomerletto.visitmuve.it/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Burano%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">5</span><div class="stop-b"><h4>Гета</h4><p>Першае гета ў свеце, па дарозе ад Fondamente Nove на Ормезіні.</p><p class="hours">Квартал адкрыты заўсёды</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Ghetto%20Novo%20Venezia" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop food"><span class="num" aria-hidden="true">6</span><div class="stop-b"><h4>Vino Vero</h4><p>Натуральныя віны і чыкеці на Місэрыкордыі. Поруч Bacaro ae Bricoe.</p><p class="hours">Пн з 16:00 да 0:00</p><p class="links"><a href="http://www.vinovero.wine/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Vino%20Vero%20Venezia&amp;query_place_id=ChIJ5bseOt2xfkcRgnQ5c7O4fDU" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+  </ol>
+</section>
+
+<section id="d6">
+  <div class="day-h"><h2>6 кастрычніка</h2><span class="wd">аўторак</span></div>
+  <p class="lead">Дарога на Гарду, потым возера. Фунікулёр — назаўтра раніцай.</p>
+  <figure><div class="mapbox"><svg viewBox="0 0 760 214" role="img" aria-label="Венецыя, Гарда і Бергама">
+<rect class="m-landbg" x="0" y="0" width="760" height="214"/>
+<polygon class="m-lake" points="330.7,13.3 340.0,18.3 336.0,30.5 328.0,45.8 324.1,53.4 321.8,58.7 321.5,61.0 320.0,64.8 317.3,70.6 310.7,83.9 298.7,101.1 290.7,116.3 294.7,129.7 298.7,141.1 302.7,158.3 297.3,171.6 290.7,183.1 282.7,181.2 270.7,177.4 268.5,161.3 266.1,175.4 256.0,175.4 250.7,172.4 245.3,160.2 245.3,141.1 248.0,122.1 256.0,114.4 272.0,99.2 285.3,83.9 298.7,66.7 306.7,59.1 313.3,47.7 318.7,34.3 325.3,21.0"/>
+<line class="m-route" x1="725.6" y1="182.7" x2="291.5" y2="183.3"/>
+<line class="m-route" x1="291.5" y1="183.3" x2="322.0" y2="59.4"/>
+<line class="m-route" x1="291.5" y1="183.3" x2="27.8" y2="93.9"/>
+<g class="m-pin pier"><circle cx="725.6" cy="182.7" r="11"/><text x="725.6" y="183.2" text-anchor="middle" dominant-baseline="central">V</text></g>
+<text class="m-tag" x="710.6" y="182.7" text-anchor="end" dominant-baseline="central">Венецыя</text>
+<g class="m-pin pier"><circle cx="291.5" cy="183.3" r="11"/><text x="291.5" y="183.8" text-anchor="middle" dominant-baseline="central">P</text></g>
+<text class="m-tag" x="306.5" y="193.3" text-anchor="start" dominant-baseline="central">Пескера</text>
+<g class="m-pin home"><circle cx="322.0" cy="59.4" r="11"/><text x="322.0" y="59.9" text-anchor="middle" dominant-baseline="central">M</text></g>
+<text class="m-tag" x="337.0" y="59.4" text-anchor="start" dominant-baseline="central">Мальчэзінэ</text>
+<g class="m-pin pier"><circle cx="27.8" cy="93.9" r="11"/><text x="27.8" y="94.4" text-anchor="middle" dominant-baseline="central">B</text></g>
+<text class="m-tag" x="42.8" y="93.9" text-anchor="start" dominant-baseline="central">Бергама BGY</text>
+</svg></div><figcaption>Пункцір: цягнік Венецыя → Пескера, аўтобус Пескера → Мальчэзінэ, Flixbus Пескера → Бергама (7.10).</figcaption></figure>
+  <ul class="plain">
+    <li><b>З Лідо да вакзала:</b> лінія 1 або 5.1 да Ferrovia ці Piazzale Roma.</li>
+    <li><b>Венецыя → Пескера-дэль-Гарда:</b> цягнік, звычайна каля 1,5 гадзіны (<a href="https://www.trenitalia.com/en.html" target="_blank" rel="noopener">Trenitalia</a>, <a href="https://www.italotreno.com/en" target="_blank" rel="noopener">Italo</a>).</li>
+    <li><b>Пескера → Мальчэзінэ:</b> аўтобус ATV №483 ад вакзала, раз на гадзіну, каля 1 г 45 хв уздоўж берага. Варыянт: цягнік да Вероны, аўтобус 163/164/185 да Гарды, там 483/484. <a href="https://www.atv.verona.it/en/bus-malcesine-cableway" target="_blank" rel="noopener">Расклад ATV</a>.</li>
+  </ul>
+  <figure><div class="mapbox"><svg viewBox="0 0 760 439" role="img" aria-label="Мальчэзінэ і Монтэ-Бальда">
+<rect class="m-landbg" x="0" y="0" width="760" height="439"/>
+<polygon class="m-lake" points="612.9,-1932.8 1041.9,-1704.4 858.1,-1142.1 490.3,-439.3 312.6,-87.9 203.5,158.1 190.0,263.6 122.6,439.3 0.0,702.8 -306.5,1317.8 -858.1,2108.5 -1225.8,2811.3 -1041.9,3426.3 -858.1,3953.5 -674.2,4744.1 -919.4,5359.1 -1225.8,5886.3 -1593.5,5798.4 -2145.2,5622.7 -2243.2,4884.7 -2353.5,5534.8 -2819.4,5534.8 -3064.5,5394.3 -3309.7,4832.0 -3309.7,3953.5 -3187.1,3074.9 -2819.4,2723.5 -2083.9,2020.7 -1471.0,1317.8 -858.1,527.1 -490.3,175.7 -183.9,-351.4 61.3,-966.4 367.7,-1581.4"/>
+<line class="m-route" x1="285.1" y1="155.9" x2="668.1" y2="333.8"/>
+<g class="m-pin home"><circle cx="212.8" cy="186.6" r="11"/><text x="212.8" y="187.1" text-anchor="middle" dominant-baseline="central">H</text></g>
+<text class="m-tag" x="197.8" y="200.6" text-anchor="end" dominant-baseline="central">Гатэль</text>
+<g class="m-pin "><circle cx="224.2" cy="156.0" r="11"/><text x="224.2" y="156.5" text-anchor="middle" dominant-baseline="central">1</text></g>
+<text class="m-tag" x="224.2" y="136.0" text-anchor="middle" dominant-baseline="central">Замак</text>
+<g class="m-pin pier"><circle cx="199.8" cy="172.2" r="11"/><text x="199.8" y="172.7" text-anchor="middle" dominant-baseline="central">2</text></g>
+<text class="m-tag" x="184.8" y="172.2" text-anchor="end" dominant-baseline="central">Порт</text>
+<g class="m-pin "><circle cx="285.1" cy="155.9" r="11"/><text x="285.1" y="156.4" text-anchor="middle" dominant-baseline="central">3</text></g>
+<text class="m-tag" x="300.1" y="155.9" text-anchor="start" dominant-baseline="central">Фунікулёр</text>
+<g class="m-pin "><circle cx="668.1" cy="333.8" r="11"/><text x="668.1" y="334.3" text-anchor="middle" dominant-baseline="central">4</text></g>
+<text class="m-tag" x="653.1" y="333.8" text-anchor="end" dominant-baseline="central">Монтэ-Бальда</text>
+</svg></div><figcaption>Мальчэзінэ: гатэль, замак і порт побач, да фунікулёра каля 10 хвілін пешшу.</figcaption></figure>
+  <ol class="stops">
+    <li class="stop "><span class="num" aria-hidden="true">1</span><div class="stop-b"><h4>Замак Скалігера</h4><p>Від на ўсё возера з вежы, музей прыроды Бальда і залы Гётэ.</p><p class="hours">Штодня 9:30–18:30, уваход да 18:00 · €7</p><p class="links"><a href="https://www.visitmalcesine.com/it/il-castello-scaligero-nel-cuore-del-borgo-di-malcesine" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=45.766121,10.8082867" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop pier"><span class="num" aria-hidden="true">2</span><div class="stop-b"><h4>Порт Мальчэзінэ, паромы</h4><p>Паром на той бок возера, напрыклад у Ліманэ-суль-Гарда.</p><p class="hours">Расклад — на сайце Navigazione Laghi</p><p class="links"><a href="https://www.navigazionelaghi.it/en/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Porto%20di%20Malcesine%20imbarcadero" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+  </ol>
+  <p class="note">Можна проста пасядзець на беразе ці пакупацца: знаёмыя кажуць, што на мінулым тыдні вада была нармальная.</p>
+</section>
+
+<section id="d7">
+  <div class="day-h"><h2>7 кастрычніка</h2><span class="wd">серада</span></div>
+  <p class="lead">Раніцай гара, потым дарога ў Бергама. Самалёт а 21:30, таму ў аэрапорце лепш быць да 19:30.</p>
+  <ol class="stops">
+    <li class="stop "><span class="num" aria-hidden="true">3</span><div class="stop-b"><h4>Фунікулёр Мальчэзінэ – Монтэ-Бальда</h4><p>Кабіна верціцца, да 1760 м каля 15 хвілін з перасадкай у Сан-Мікеле. Анлайн-квіток прывязаны да 30-хвіліннага слота. Наверсе халадней — вазьміце куртку.</p><p class="hours">Першы пад'ём 8:00, далей кожныя 30 хв · апошні спуск каля 16:45 · туды і назад €30, анлайн €28</p><p class="links"><a href="https://www.funiviedelbaldo.it/en/timetables-and-fares-malcesine-monte-baldo-cable-cars" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=45.7661258,10.813262" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+    <li class="stop "><span class="num" aria-hidden="true">4</span><div class="stop-b"><h4>Монтэ-Бальда, Tratto Spino 1760 м</h4><p>Пару гадзін на шпацыр і від на возера зверху.</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Tratto%20Spino%20Monte%20Baldo" target="_blank" rel="noopener">Google Maps</a></p></div></li>
+  </ol>
+  <h3>Мальчэзінэ → аэрапорт Бергама</h3>
+  <ul class="plain">
+    <li><b>Аўтобус 483</b> да вакзала Пескеры, каля 1 г 45 хв.</li>
+    <li><b>Flixbus Пескера → BGY</b>, каля 1 гадзіны, ад €17. Рэйсаў мала (каля трох у дзень), таму білет лепш купіць загадзя. <a href="https://global.flixbus.com/bus-routes/bus-peschiera-del-garda-bergamo-orio-al-serio-airport" target="_blank" rel="noopener">Flixbus</a></li>
+    <li>Агулам ад Мальчэзінэ да аэрапорта закладвайце 3,5–4 гадзіны, з запасам на перасадку.</li>
+  </ul>
+</section>
+
+<section id="food">
+  <div class="day-h"><h2>Ежа ў Венецыі</h2></div>
+  <p class="lead">Найтанней — чыкеці стоячы ля стойкі з «омбрай», маленькай шклянкай віна. Абыходзьце рэстараны з меню ў фатаграфіях каля Сан-Марка.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Месца</th><th>Раён</th><th>Нд 4.10</th><th>Пн 5.10</th><th>Спасылкі</th></tr></thead>
+    <tbody>
+      <tr><td>Bacaro aea pescaria — вустрыцы, віно лагуны</td><td>Рыальта</td><td class="num">7:30–22:00</td><td class="num">7:30–22:30</td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=Bacaro%20aea%20pescaria&amp;query_place_id=ChIJpQybFQCxfkcR_V_Rv-M1PP8" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>Ostaria dai Zemei — класічныя чыкеці</td><td>Сан-Пола</td><td class="num">9:00–19:00</td><td class="num">9:00–20:30</td><td><a href="http://www.ostariadaizemei.it/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Ostaria%20dai%20Zemei&amp;query_place_id=ChIJi9ArGduxfkcRieJllnhQ-x0" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>L' Bacaro de' Bischeri — фокача-сэндвічы</td><td>Рыальта</td><td class="num">10:00–17:00</td><td class="num">10:00–19:00</td><td><a href="https://i-bacaro-de-bischeri.jimdosite.com/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=L%27%20Bacaro%20de%27%20Bischeri&amp;query_place_id=ChIJ2ck-uN2xfkcRv9qAuDfCGi0" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>Bacaro Risorto Castello — па дарозе ў Кастэла</td><td>Сан-Закарыя</td><td class="num">8:00–1:00</td><td class="num">8:00–1:00</td><td><a href="https://linktr.ee/Bacarorisortovenezia" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Bacaro%20Risorto%20Castello&amp;query_place_id=ChIJzW0ACNixfkcRPrPuhk4XMFM" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>Bacareto da ea Neni — чыкеці ≈ €1,5, спрыц ≈ €3</td><td>Ормезіні</td><td class="num">11:00–21:30</td><td class="num">зачынена</td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=Bacareto%20da%20ea%20Neni&amp;query_place_id=ChIJ1TaL_-mxfkcRRDHFNkK8VsU" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>Bacaro ae Bricoe — крэатыўныя чыкеці, сваё піва</td><td>Ормезіні</td><td class="num">8:30–23:00</td><td class="num">8:30–23:00</td><td><a href="http://www.bacaroaebricoe.com/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Bacaro%20ae%20Bricoe&amp;query_place_id=ChIJobTpB8KxfkcRZ3AL9RX4iKA" target="_blank" rel="noopener">Google Maps</a></td></tr>
+      <tr><td>Vino Vero — натуральныя віны</td><td>Місэрыкордыя</td><td class="num">11:00–0:00</td><td class="num">16:00–0:00</td><td><a href="http://www.vinovero.wine/" target="_blank" rel="noopener">Сайт</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Vino%20Vero%20Venezia&amp;query_place_id=ChIJ5bseOt2xfkcRgnQ5c7O4fDU" target="_blank" rel="noopener">Google Maps</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Крыніцы</h3>
+  <ul class="sources">
+    <li><a href="https://www.labiennale.org/en/art/2026/information" target="_blank" rel="noopener">Біенале: гадзіны і квіткі</a> · <a href="https://www.labiennale.org/en/art/2026/official-unofficial-belarus" target="_blank" rel="noopener">беларуская выстава</a> · <a href="https://www.dce.va/en/news/2026/opening-of-the-holy-see-s-new-pavilion-at-the-venice-biennale.html" target="_blank" rel="noopener">павільён Ватыкана</a></li>
+    <li><a href="https://visit.venice.it/plan-your-trip/venice-vaporetto" target="_blank" rel="noopener">Праязныя ACTV 2026</a> · <a href="https://visit.venice.it/plan-your-trip/venice-airport-transfer" target="_blank" rel="noopener">з аэрапорта ў горад</a> · <a href="https://www.invenicetoday.com/en/services/Alilaguna/Alilaguna-Blue-Line-Venice.htm" target="_blank" rel="noopener">Alilaguna, сіняя лінія</a> · <a href="https://www.invenicetoday.com/en/services/how-to-get-to/venice-santerasmo.htm" target="_blank" rel="noopener">як дабрацца на Сант-Эразма</a> · <a href="https://cda.ve.it/en/" target="_blank" rel="noopener">збор за ўваход</a></li>
+    <li><a href="https://www.venicevisitpass.com/en/magazine-en/san-michele-island-venices-monumental-cemetery-between-art-and-silence/" target="_blank" rel="noopener">Сан-Мікеле</a> · <a href="https://www.visitmuve.it/visita/" target="_blank" rel="noopener">музеі Мурана і Бурана</a> · <a href="https://www.teatrolafenice.it/en/" target="_blank" rel="noopener">Ла Фенічэ</a></li>
+    <li><a href="https://www.atv.verona.it/en/bus-malcesine-cableway" target="_blank" rel="noopener">Аўтобусы ATV</a> · <a href="https://www.visitmalcesine.com/it/il-castello-scaligero-nel-cuore-del-borgo-di-malcesine" target="_blank" rel="noopener">замак Мальчэзінэ</a> · <a href="https://www.funiviedelbaldo.it/en/timetables-and-fares-malcesine-monte-baldo-cable-cars" target="_blank" rel="noopener">фунікулёр</a> · <a href="https://global.flixbus.com/bus-routes/bus-peschiera-del-garda-bergamo-orio-al-serio-airport" target="_blank" rel="noopener">Flixbus Пескера → BGY</a></li>
+    <li>Гадзіны бакараў — з Google Maps, на 3 кастрычніка 2026.</li>
+  </ul>
+</section>
+<footer>Buon viaggio</footer>
+</div>
+
+</body>
+</html>
